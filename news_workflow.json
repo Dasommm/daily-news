@@ -1,0 +1,493 @@
+{
+  "name": "AI Agent workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.theverge.com/rss/index.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedReadTool",
+      "typeVersion": 1.2,
+      "position": [
+        -176,
+        944
+      ],
+      "id": "303e9b4e-cc4e-4d8a-8ede-7550f070d212",
+      "name": "Get Tech News"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Reads the news",
+        "url": "=https://feeds.bbci.co.uk/news/world/rss.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedReadTool",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        944
+      ],
+      "id": "4090a753-f131-40b1-87c3-cf74d5a7e325",
+      "name": "Get World News"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        752
+      ],
+      "id": "651543b5-0213-433f-8760-57d62b8d6d64",
+      "name": "Run every day at 7AM",
+      "notesInFlow": true,
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2fd14035-f01c-4ca9-9715-a677ee82654e",
+              "name": "output.date",
+              "value": "={{ $json.output.date }}",
+              "type": "string"
+            },
+            {
+              "id": "10d9d370-6c26-41cc-a030-7ee4c390812e",
+              "name": "output.world_news",
+              "value": "={{ $json.output.world_news }}",
+              "type": "array"
+            },
+            {
+              "id": "d6f088b8-1510-4563-8295-ff6687d7cc34",
+              "name": "output.tech_news",
+              "value": "={{ $json.output.tech_news }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        544
+      ],
+      "id": "99f7bb9e-f8c0-43ca-a9a8-a76634ac9611",
+      "name": "Output",
+      "notesInFlow": true,
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        544
+      ],
+      "id": "a0390291-6794-4673-9a6a-5c3d3a5d9e4b",
+      "name": "Click ‘Execute workflow’ to run"
+    },
+    {
+      "parameters": {
+        "content": "## ⚡ Start here:",
+        "height": 224,
+        "width": 224,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        480
+      ],
+      "id": "fac5929f-e065-4474-96b1-7bcc06834238",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -272,
+        768
+      ],
+      "id": "b16482e8-0d48-4426-aa93-c3fee11dd3cd",
+      "name": "OpenAI Model",
+      "notesInFlow": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "L9PkpuzGfdt0CZS4",
+          "name": "n8n free OpenAI API credits"
+        }
+      },
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "content": "@[youtube](cMyOkQ4N-5M)",
+        "height": 512,
+        "width": 902,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        -96
+      ],
+      "id": "ec65e69e-77fa-4912-a4af-49e0a248e2c8",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Summarize world news and tech news from the last 24 hours. Skip your comments. The titles should be \"World news:\" and \"Tech news:\" Today is {{ $today }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -272,
+        544
+      ],
+      "id": "084d56aa-d157-4964-9073-b36d9d9589c5",
+      "name": "AI Summary Agent",
+      "notesInFlow": true,
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "content": "### Double click here to see the results:",
+        "height": 240,
+        "width": 192,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        112,
+        464
+      ],
+      "id": "a4b7a69a-0db8-4b9b-a81d-fd83378043a3",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### 📰 Daily AI Summary\n\n\nThis workflow gets the latest news and asks AI to summarize it for you.\n\n⭐ Bonus: Send the summary via email by connecting your Gmail account\n\n▶ Watch the video to get started ",
+        "height": 272,
+        "width": 224,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        32
+      ],
+      "id": "74d80857-5e63-47a8-8e86-8ecd10fd5f9e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.property_email }}",
+        "subject": "Your news daily summary",
+        "message": "=<!DOCTYPE html>\n<html lang=\"ko\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>Daily News Brief</title>\n  <style>\n    body {\n      margin: 0;\n      padding: 0;\n      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n      background-color: #f4f4f4;\n    }\n    .container {\n      max-width: 600px;\n      margin: 0 auto;\n      background-color: #ffffff;\n    }\n    .header {\n      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n      color: #ffffff;\n      padding: 40px 30px;\n      text-align: center;\n    }\n    .header h1 {\n      margin: 0;\n      font-size: 32px;\n      font-weight: 700;\n    }\n    .date {\n      margin-top: 10px;\n      font-size: 14px;\n      opacity: 0.9;\n    }\n    .content {\n      padding: 30px;\n    }\n    .section-title {\n      font-size: 24px;\n      color: #333;\n      margin-bottom: 20px;\n      padding-bottom: 10px;\n      border-bottom: 3px solid #667eea;\n      font-weight: 600;\n    }\n    .news-item {\n      margin-bottom: 25px;\n      padding-bottom: 25px;\n      border-bottom: 1px solid #e0e0e0;\n    }\n    .news-item:last-child {\n      border-bottom: none;\n    }\n    .headline {\n      font-size: 18px;\n      font-weight: 600;\n      color: #2c3e50;\n      margin-bottom: 8px;\n      line-height: 1.4;\n    }\n    .summary {\n      font-size: 14px;\n      color: #555;\n      line-height: 1.6;\n    }\n    .section-divider {\n      height: 30px;\n    }\n    .badge {\n      display: inline-block;\n      background-color: #667eea;\n      color: white;\n      padding: 4px 12px;\n      border-radius: 12px;\n      font-size: 11px;\n      font-weight: 600;\n      margin-bottom: 8px;\n      text-transform: uppercase;\n    }\n    .tech-badge {\n      background-color: #f39c12;\n    }\n    .no-news {\n      color: #999;\n      font-style: italic;\n      padding: 20px 0;\n    }\n    .footer {\n      background-color: #2c3e50;\n      color: #ffffff;\n      padding: 20px 30px;\n      text-align: center;\n      font-size: 12px;\n    }\n  </style>\n</head>\n\n<body>\n  <div class=\"container\">\n\n    <!-- Header -->\n    <div class=\"header\">\n      <h1>📰 Daily News Brief</h1>\n      <div class=\"date\">\n        {{ $('Output').item.json.output.date.toDateTime().format('yyyy-MM-dd') }}\n      </div>\n    </div>\n\n    <!-- Content -->\n    <div class=\"content\">\n\n      <!-- 🌍 World News -->\n      {{ $('Output').item.json.output.world_news.length ?\n          `<h2 class=\"section-title\">🌍 세계 뉴스</h2>\n            ${$('Output').item.json.output.world_news.map(news => `\n              <div class=\"news-item\">\n                <span class=\"badge\">세계</span>\n                <div class=\"headline\">${news.headline}</div>\n                <div class=\"summary\">${news.summary}</div>\n              </div>\n            `).join('')}\n          `\n          : '<p class=\"no-news\">오늘의 세계 뉴스가 없습니다.</p>'\n      }}\n\n      <!-- Divider -->\n      {{\n          $('Output').item.json.output.world_news.length && $('Output').item.json.output.tech_news.length\n          ? '<div class=\"section-divider\"></div>'\n          : ''\n      }}\n\n      <!-- 💻 Tech News -->\n      {{\n        $('Output').item.json.output.tech_news.length\n          ? `\n            <h2 class=\"section-title\">💻 기술 뉴스</h2>\n            ${$('Output').item.json.output.tech_news.map(news => `\n              <div class=\"news-item\">\n                <span class=\"badge tech-badge\">기술</span>\n                <div class=\"headline\">${news.headline}</div>\n                <div class=\"summary\">${news.summary}</div>\n              </div>\n            `).join('')}\n          `\n          : ''\n      }}\n\n    </div>\n\n    <!-- Footer -->\n    <div class=\"footer\">\n      <p><strong>Daily News Brief</strong></p>\n      <p>매일 아침 전 세계의 주요 뉴스를 전해드립니다</p>\n      <p style=\"margin-top: 15px; opacity: 0.8;\">\n        © 2026 Daily News Brief. All rights reserved.\n      </p>\n    </div>\n\n  </div>\n</body>\n</html>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        576,
+        544
+      ],
+      "id": "45625d0d-bf26-4379-9eed-7bbc8e5d87a5",
+      "name": "Send summary by email",
+      "webhookId": "093b04f1-5e78-4926-9863-1b100d6f2ead",
+      "notesInFlow": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "kKD2ZwEerMbTeddP",
+          "name": "Gmail account"
+        }
+      },
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"date\": \"\",\n  \"world_news\": [\n    {\n      \"headline\": \"\",\n      \"summary\": \"\"\n    }\n  ],\n  \"tech_news\": [\n    {\n      \"headline\": \"\",\n      \"summary\": \"\"\n    }\n  ]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        768
+      ],
+      "id": "a6fde83c-d93c-4505-90bd-90eea55308d1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        96,
+        928
+      ],
+      "id": "5804cfd4-8b98-4fa1-966a-c81d8cc24921",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "L9PkpuzGfdt0CZS4",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "2fb05eb6-74fc-8044-8861-e1e13821484a",
+          "mode": "list",
+          "cachedResultName": "뉴스 수신 이메일",
+          "cachedResultUrl": "https://www.notion.so/2fb05eb674fc80448861e1e13821484a"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        544
+      ],
+      "id": "61349e5b-b161-47b3-8025-1e272aa48a24",
+      "name": "Get many database pages",
+      "credentials": {
+        "notionApi": {
+          "id": "iagFg17iRzkUSVz9",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0ACPK4QYP9",
+          "mode": "list",
+          "cachedResultName": "news-eng"
+        },
+        "messageType": "block",
+        "blocksUi": "={{ $json.outer_blocks[0] }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        576,
+        784
+      ],
+      "id": "ee49775c-42bb-4fff-9bb6-d7338ab50963",
+      "name": "Send a message",
+      "webhookId": "8052017d-5a35-46ec-95ff-7830be862f9d",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "Y5wTAkK47q3x8Vlv",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const blocks = [];\nconst outer_blocks = [];\nconst square_bloks = [];\nconst today = $('Run every day at 7AM').first().json.Month + ' ' + $('Run every day at 7AM').first().json['Day of month'] + ', ' + $('Run every day at 7AM').first().json.Year\n\n// 헤더\nblocks.push({\n  type: \"header\",\n  text: {\n    type: \"plain_text\",\n    text: `📰 Daily News Brief 📰`\n  }\n});\n\nblocks.push({\n  type: \"context\",\n  elements: [{\n    type: \"mrkdwn\",\n    text: `*${today}*  | StackLab Announcements`\n  }]\n});\n\nblocks.push({ type: \"divider\" });\n\n//world news\nblocks.push({\n  type: \"header\",\n  text: {\n    type: \"plain_text\",\n    text: `🌍 World News`\n  }\n});\n\nconst world_news = $input.first().json.output.world_news;\nfor(let i = 0; i < world_news.length; i++){\n  console.log(\"world_news\",i, world_news[i])\n  const headline = world_news[i].headline;\n  const summary = world_news[i].summary;\n  blocks.push({\n  type: \"section\",\n  text: {\n    type: \"mrkdwn\",\n    text: `✔️ *${headline}* \\n\\n ${summary}`\n    }\n  });\n}\n\nblocks.push({ type: \"divider\" });\n\n// tech_news\nblocks.push({\n  type: \"header\",\n  text: {\n    type: \"plain_text\",\n    text: `💻 Tech News`\n  }\n});\n\nconst tech_news = $input.first().json.output.tech_news;\nfor(let i = 0; i < tech_news.length; i++){\n  const headline = tech_news[i].headline;\n  const summary = tech_news[i].summary;\n  blocks.push({\n  type: \"section\",\n  text: {\n    type: \"mrkdwn\",\n    text: `☑️ *${headline}* \\n\\n ${summary}`\n    }\n  });\n}\n\nblocks.push({ type: \"divider\" });\n\nouter_blocks.push({blocks:blocks});\nsquare_bloks.push({outer_blocks: outer_blocks})\n\nreturn square_bloks\n;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        784
+      ],
+      "id": "135ecbaa-833d-4e1f-bf27-cbb7b62bec83",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "connections": {
+    "Get Tech News": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Summary Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get World News": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Summary Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run every day at 7AM": {
+      "main": [
+        [
+          {
+            "node": "AI Summary Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Click ‘Execute workflow’ to run": {
+      "main": [
+        [
+          {
+            "node": "AI Summary Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Summary Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Summary Agent": {
+      "main": [
+        [
+          {
+            "node": "Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output": {
+      "main": [
+        [
+          {
+            "node": "Get many database pages",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Summary Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many database pages": {
+      "main": [
+        [
+          {
+            "node": "Send summary by email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send summary by email": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "availableInMCP": false
+  },
+  "staticData": {
+    "node:Run every day at 7AM": {
+      "recurrenceRules": []
+    }
+  },
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": {
+    "templateId": "ready-to-run-ai-workflow",
+    "templateCredsSetupCompleted": true
+  }
+}
