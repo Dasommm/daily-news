@@ -97,8 +97,22 @@ daily-news/
 ├── daily_news.py               # 메인 봇 스크립트
 ├── requirements.txt            # Python 의존성
 ├── news_workflow.json          # n8n 워크플로우 참고 (원본)
-└── README.md                   # 프로젝트 문서
+├── README.md                   # 프로젝트 문서 (이 파일)
+├── CLAUDE.md                   # AI 에이전트를 위한 지침
+├── PROGRESS.md                 # 작업 진행 상황 기록
+└── PLAN.md                     # 향후 계획 및 로드맵
 ```
+
+## 📚 문서
+
+이 프로젝트는 여러 문서로 구성되어 있습니다:
+
+- **[README.md](./README.md)** - 프로젝트 개요 및 설정 가이드 (이 파일)
+- **[CLAUDE.md](./CLAUDE.md)** - AI 에이전트를 위한 작업 지침
+- **[PROGRESS.md](./PROGRESS.md)** - 완료된 작업 및 현재 상태
+- **[PLAN.md](./PLAN.md)** - 향후 개선 사항 및 로드맵
+
+새로운 세션을 시작하거나 프로젝트 기여 시 CLAUDE.md를 먼저 읽어주세요.
 
 ## 🔒 보안 주의사항
 
