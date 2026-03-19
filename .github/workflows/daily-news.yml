@@ -3,7 +3,7 @@ name: Daily News Bot
 on:
   # Schedule: Run every day at 7 AM KST (10 PM UTC previous day)
   schedule:
-    - cron: '0 22 * * *'  # UTC time (KST = UTC + 9)
+    - cron: '23 0 * * *'  # UTC time (KST = UTC + 9)
 
   # Allow manual trigger for testing
   workflow_dispatch:
