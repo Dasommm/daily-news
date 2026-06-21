@@ -25,7 +25,7 @@ See [PROGRESS.md](./PROGRESS.md) for detailed completion status.
    - Verify news appears in Slack channel
 
 3. **Monitor First Automatic Run** ⏳
-   - Wait for scheduled run at 7 AM KST
+   - Wait for scheduled run at 9 AM KST
    - Check Actions tab for execution logs
    - Verify Slack message delivery
 
@@ -172,7 +172,7 @@ None currently. All required resources are available.
 
 ### Phase 1 (Current) - MVP Success
 - ✅ Bot executes successfully
-- ⏳ News delivered to Slack daily at 7 AM
+- ⏳ News delivered to Slack daily at 9 AM KST
 - ⏳ Zero manual intervention required after setup
 
 ### Phase 2 - Reliability
@@ -221,7 +221,7 @@ python daily_news.py
 ## Questions for Stakeholders
 
 - Should we add more news sources? Which ones?
-- Is 7 AM KST the best time, or should we offer multiple times?
+- Is 9 AM KST the best time, or should we offer multiple times?
 - Do you want email delivery in addition to Slack?
 - Should we track metrics like most-read topics?
 

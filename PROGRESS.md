@@ -29,7 +29,7 @@
   - Slack Block Kit message formatting
   - Error handling and logging
 - [x] Created GitHub Actions workflow (`.github/workflows/daily-news.yml`):
-  - Scheduled to run daily at 7 AM KST (22:00 UTC)
+  - Scheduled to run daily at 9 AM KST (00:00 UTC)
   - Manual trigger support via `workflow_dispatch`
   - Secure secret management via GitHub Secrets
 - [x] Created `.env.example` as environment variable template
@@ -115,9 +115,11 @@ See [PLAN.md](./PLAN.md) for future enhancements and next actions.
 - **World News:** https://feeds.bbci.co.uk/news/world/rss.xml
 
 ### Schedule
-- **Cron Expression:** `0 22 * * *` (UTC)
-- **Local Time:** 07:00 KST (Korea Standard Time)
+- **Cron Expression:** `0 0 * * *` (UTC)
+- **Local Time:** 09:00 KST (Korea Standard Time)
 - **Runs:** Daily, automatically via GitHub Actions
+- **Note:** GitHub Actions scheduled runs are best-effort and can be
+  delayed by minutes to hours; actual start time may drift from 09:00 KST.
 
 ### OpenAI Configuration
 - **Model:** gpt-4o-mini

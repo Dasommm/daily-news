@@ -1,6 +1,6 @@
 # 📰 Daily News Bot
 
-매일 오전 7시에 세계 뉴스와 기술 뉴스를 수집하여 요약한 후 Slack으로 전달하는 자동화 봇입니다.
+매일 오전 9시(KST)에 세계 뉴스와 기술 뉴스를 수집하여 요약한 후 Slack으로 전달하는 자동화 봇입니다.
 
 ## ✨ 특징
 
@@ -73,18 +73,19 @@ python daily_news.py
 
 ## ⏰ 실행 시간 변경
 
-기본 실행 시간은 매일 오전 7시(KST)입니다. 변경하려면:
+기본 실행 시간은 매일 오전 9시(KST)입니다. 변경하려면:
 
 `.github/workflows/daily-news.yml` 파일에서 cron 표현식을 수정합니다:
 
 ```yaml
 schedule:
-  - cron: '0 22 * * *'  # UTC 22:00 = KST 07:00
+  - cron: '0 0 * * *'  # UTC 00:00 = KST 09:00
 ```
 
 **시간대 참고:**
 - KST(한국 표준시) = UTC + 9
 - 예: KST 오전 9시 = UTC 0시 → `'0 0 * * *'`
+- 참고: GitHub Actions의 예약 실행은 best-effort 방식이라 수 분~수 시간 지연될 수 있습니다.
 - Cron 표현식: [Crontab Guru](https://crontab.guru/) 참고
 
 ## 📁 프로젝트 구조

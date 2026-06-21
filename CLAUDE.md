@@ -30,7 +30,7 @@ What would you like to work on today?
 ## 📋 Project Overview
 
 **Project:** Daily News Bot
-**Purpose:** Automatically fetch, summarize, and send news to Slack every day at 7 AM KST
+**Purpose:** Automatically fetch, summarize, and send news to Slack every day at 9 AM KST
 **Repository:** https://github.com/Dasommm/daily-news
 
 ### Technology Stack
@@ -42,7 +42,7 @@ What would you like to work on today?
 
 ### Architecture
 ```
-GitHub Actions (Schedule: 7 AM KST)
+GitHub Actions (Schedule: 9 AM KST)
   ↓
 daily_news.py
   ↓
@@ -152,7 +152,7 @@ daily-news/
 **File:** `.github/workflows/daily-news.yml`
 
 ### Critical Points
-- Scheduled via cron: `0 22 * * *` (UTC) = 7 AM KST
+- Scheduled via cron: `0 0 * * *` (UTC) = 9 AM KST
 - Requires GitHub Secrets to be set by user
 - Uses Python 3.11
 - Caches pip dependencies for speed
@@ -205,7 +205,8 @@ python daily_news.py
 ### 2. Timezone Confusion
 - Cron in GitHub Actions runs in UTC
 - Korea (KST) = UTC + 9
-- 7 AM KST = 10 PM UTC previous day = `0 22 * * *`
+- 9 AM KST = 12 AM (00:00) UTC same day = `0 0 * * *`
+- Note: GitHub Actions scheduled runs are best-effort and may be delayed by minutes to hours
 
 ### 3. Secrets Not Set
 - Workflow will fail if GitHub Secrets aren't configured
@@ -264,7 +265,7 @@ python daily_news.py
 ## 🎯 Project Goals
 
 ### Primary Goal
-Deliver relevant, summarized news to Slack every morning at 7 AM KST without manual intervention.
+Deliver relevant, summarized news to Slack every morning at 9 AM KST without manual intervention.
 
 ### Secondary Goals
 - Maintain zero cost (GitHub Actions free tier)

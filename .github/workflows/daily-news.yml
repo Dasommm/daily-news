@@ -1,9 +1,10 @@
 name: Daily News Bot
 
 on:
-  # Schedule: Run every day at 7 AM KST (10 PM UTC previous day)
+  # Schedule: Run every day at 9 AM KST (00:00 UTC same day)
+  # Note: GitHub Actions cron is best-effort and may be delayed by minutes to hours.
   schedule:
-    - cron: '23 0 * * *'  # UTC time (KST = UTC + 9)
+    - cron: '0 0 * * *'  # UTC time (KST = UTC + 9, so 00:00 UTC = 09:00 KST)
 
   # Allow manual trigger for testing
   workflow_dispatch:
