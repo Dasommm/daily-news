@@ -2,7 +2,7 @@
 
 ## Project Status: ✅ Initial Implementation Complete
 
-**Last Updated:** 2026-03-18
+**Last Updated:** 2026-06-21
 
 ---
 
@@ -34,6 +34,22 @@
   - Secure secret management via GitHub Secrets
 - [x] Created `.env.example` as environment variable template
 - [x] Updated `README.md` with comprehensive setup instructions
+
+### Phase 4: Korean Translation & Vocabulary (2026-06-21) ✅
+- [x] Extended `summarize_news()` to request a Korean translation
+  (`summary_ko`) for each news item alongside the English summary
+- [x] Added a `vocabulary` array to the OpenAI response: 5 useful English
+  words/expressions drawn from across all of the day's news, each with a
+  Korean meaning and an English example sentence
+- [x] Updated `build_slack_blocks()` to render the Korean translation
+  (`🇰🇷` line) below each English summary
+- [x] Added a "📚 오늘의 영어 표현" section at the bottom of the message
+  listing the 5 expressions (expression — meaning + example)
+- [x] All new fields handled defensively with `.get()` — if the model omits
+  `summary_ko` or `vocabulary`, the bot falls back gracefully (English-only
+  summary, vocabulary section skipped) without breaking existing behavior
+- [x] Verified `build_slack_blocks()` output with both full and degraded
+  data (no extra OpenAI/Slack calls needed; single API call unchanged)
 
 ### Phase 3: Security & Documentation ✅
 - [x] Implemented security best practices:
@@ -107,12 +123,16 @@ See [PLAN.md](./PLAN.md) for future enhancements and next actions.
 - **Model:** gpt-4o-mini
 - **Response Format:** JSON
 - **Temperature:** 0.7
-- **Output Structure:** Structured news summaries with headlines and summaries
+- **Output Structure:** Structured news summaries with English headlines,
+  English summaries, Korean translations (`summary_ko`), and a `vocabulary`
+  array (5 English expressions with Korean meanings and example sentences)
 
 ### Slack Integration
 - **Method:** Incoming Webhooks
 - **Format:** Block Kit (structured messages)
-- **Sections:** Header, World News, Tech News with dividers
+- **Sections:** Header, World News, Tech News (each item shows English
+  summary + 🇰🇷 Korean translation), and a "📚 오늘의 영어 표현" vocabulary
+  section, with dividers
 
 ---
 

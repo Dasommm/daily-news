@@ -3,7 +3,7 @@
 ## Current Status
 
 **Phase:** Initial Implementation Complete
-**Last Updated:** 2026-03-18
+**Last Updated:** 2026-06-21
 
 See [PROGRESS.md](./PROGRESS.md) for detailed completion status.
 
@@ -28,6 +28,17 @@ See [PROGRESS.md](./PROGRESS.md) for detailed completion status.
    - Wait for scheduled run at 7 AM KST
    - Check Actions tab for execution logs
    - Verify Slack message delivery
+
+---
+
+## Completed Enhancements
+
+- [x] **Korean translation + English vocabulary** (2026-06-21)
+  - Each news item now shows a Korean translation (🇰🇷) below its English summary
+  - Added a "📚 오늘의 영어 표현" section listing 5 useful English
+    expressions from the day's news, each with a Korean meaning and example
+  - Implemented within the existing single OpenAI call (no extra cost/latency)
+  - See PROGRESS.md "Phase 4" for details
 
 ---
 

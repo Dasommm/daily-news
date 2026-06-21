@@ -88,24 +88,36 @@ Please provide a JSON response with the following structure:
   "world_news": [
     {{
       "headline": "Brief headline",
-      "summary": "2-3 sentence summary"
+      "summary": "2-3 sentence summary in English",
+      "summary_ko": "Korean translation of the English summary"
     }}
   ],
   "tech_news": [
     {{
       "headline": "Brief headline",
-      "summary": "2-3 sentence summary"
+      "summary": "2-3 sentence summary in English",
+      "summary_ko": "Korean translation of the English summary"
+    }}
+  ],
+  "vocabulary": [
+    {{
+      "expression": "Useful English word or expression that appears in today's news",
+      "meaning": "Korean meaning of the expression",
+      "example": "A short English example sentence using the expression",
+      "example_ko": "Korean translation of the example sentence"
     }}
   ]
 }}
 
-Provide 3-5 items for each category. Make headlines concise and summaries informative."""
+Provide 3-5 items for each news category. Make headlines concise and summaries informative.
+For each news item, write the summary in English and provide a natural Korean translation in summary_ko.
+For vocabulary, select exactly 5 useful English words or expressions drawn from across all of today's news (both world and tech) that a Korean learner would benefit from knowing. For each, provide an English example sentence and its natural Korean translation in example_ko."""
 
         try:
             response = self.client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": "You are a professional news summarizer. Provide concise, informative summaries in JSON format."},
+                    {"role": "system", "content": "You are a professional news summarizer and English tutor for Korean readers. Provide concise, informative summaries with Korean translations in JSON format."},
                     {"role": "user", "content": prompt}
                 ],
                 response_format={"type": "json_object"},
@@ -156,11 +168,15 @@ Provide 3-5 items for each category. Make headlines concise and summaries inform
         for news_item in news_data.get("world_news", []):
             headline = news_item.get("headline", "")
             summary = news_item.get("summary", "")
+            summary_ko = news_item.get("summary_ko", "")
+            text = f"✔️ *{headline}*\n\n{summary}"
+            if summary_ko:
+                text += f"\n🇰🇷 {summary_ko}"
             blocks.append({
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"✔️ *{headline}*\n\n{summary}"
+                    "text": text
                 }
             })
 
@@ -178,15 +194,53 @@ Provide 3-5 items for each category. Make headlines concise and summaries inform
         for news_item in news_data.get("tech_news", []):
             headline = news_item.get("headline", "")
             summary = news_item.get("summary", "")
+            summary_ko = news_item.get("summary_ko", "")
+            text = f"☑️ *{headline}*\n\n{summary}"
+            if summary_ko:
+                text += f"\n🇰🇷 {summary_ko}"
             blocks.append({
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"☑️ *{headline}*\n\n{summary}"
+                    "text": text
                 }
             })
 
         blocks.append({"type": "divider"})
+
+        # Today's English Expressions
+        vocabulary = news_data.get("vocabulary", [])
+        if vocabulary:
+            blocks.append({
+                "type": "header",
+                "text": {
+                    "type": "plain_text",
+                    "text": "📚 오늘의 영어 표현"
+                }
+            })
+
+            vocab_lines = []
+            for idx, item in enumerate(vocabulary, start=1):
+                expression = item.get("expression", "")
+                meaning = item.get("meaning", "")
+                example = item.get("example", "")
+                example_ko = item.get("example_ko", "")
+                line = f"{idx}. *{expression}* — {meaning}"
+                if example:
+                    line += f"\n   예: {example}"
+                    if example_ko:
+                        line += f"\n   ({example_ko})"
+                vocab_lines.append(line)
+
+            blocks.append({
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "\n\n".join(vocab_lines)
+                }
+            })
+
+            blocks.append({"type": "divider"})
 
         return blocks
 
